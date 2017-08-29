@@ -28,12 +28,17 @@ std::string hasData(std::string s) {
   return "";
 }
 
-int main()
+int main(int argc, char *argv[])
 {
   uWS::Hub h;
 
   PID pid;
   // TODO: Initialize the pid variable.
+  double Kp_init = atof(argv[1]);
+  double Ki_init = atof(argv[2]);
+  double Kd_init = atof(argv[3]);
+
+  pid.Init(Kp_init, Ki_init, Kd_init);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
@@ -51,6 +56,7 @@ int main()
           double speed = std::stod(j[1]["speed"].get<std::string>());
           double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
+
           /*
           * TODO: Calcuate steering value here, remember the steering value is
           * [-1, 1].
@@ -59,6 +65,8 @@ int main()
           */
           
           // DEBUG
+          pid.UpdateError(cte);
+          steer_value = pid.TotalError();
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
 
           json msgJson;
