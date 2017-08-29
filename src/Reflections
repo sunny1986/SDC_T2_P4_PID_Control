@@ -1,19 +1,36 @@
 REFLECTIONS:
 
-1. The goal of this project is to control the car steering angle such that the car stays on track and does not leave the track at any point.
+1. The goal of this project is to control the car steering angle such that the car stays on track and 
+does not leave the track at any point.
 
-2. The track and the goal is the same as that of the Behavioral Cloning project in previous term which took a neural network approach
-towards acheiving this goal. 
+2. The track and the goal is the same as that of the Behavioral Cloning project in previous term which 
+took a neural network approach towards acheiving this goal. 
 
 3. This project solves the same problem using a PID contoller.
 
-4. I started tuning the P,I & D parameters as per the theory. Started implementing a simple P controller where the steering angle is 
-"proportional" to the error in tracking the center of the road. As the error increases, the steering angle is adjusted to bring the cross track error(cte) back to 0. Here the proportional gain Kp is tuned such that the car starts to at least return back to the center of the track once it starts to deviate. Since the proportinal part of the steering adjust keeps correcting for the error even close to the center of the track + with the car's speed, the car crosses the center of the road and hence cte increases in the other direction. Hence I started to notice an oscillatory behavior of the car along the track with just the Kp value being = -1.0. So I tried to reduce it to -0.5 which resulted in reduced amplitude of oscillations of the car but still oscillations were present.
+4. I started tuning the P,I & D parameters as per the theory. Started implementing a simple P controller 
+where the steering angle is "proportional" to the error in tracking the center of the road. As the error
+increases, the steering angle is adjusted to bring the cross track error(cte) back to 0. Here the 
+proportional gain Kp is tuned such that the car starts to at least return back to the center of the track 
+once it starts to deviate. Since the proportinal part of the steering adjust keeps correcting for the error 
+even close to the center of the track + with the car's speed, the car crosses the center of the road and 
+hence cte increases in the other direction. Hence I started to notice an oscillatory behavior of the car 
+along the track with just the Kp value being = -1.0. So I tried to reduce it to -0.5 which resulted in 
+reduced amplitude of oscillations of the car but still oscillations were present.
 
-5. In order to compensate for the oscillations due to the P term, the D term was introduced which takes care of the rate of change of cte. Setting the Kd gain to a value of -0.5 let the car drive further than last time but still the oscillations were high.
+5. In order to compensate for the oscillations due to the P term, the D term was introduced which takes 
+care of the rate of change of cte. Setting the Kd gain to a value of -0.5 let the car drive further than 
+last time but still the oscillations were high.
 
-6. So I played around with the Kp term again and reduced it to -0.20 and increased the Kd term to -0.75. The oscillations reduced by a good amount. Continuing with this trend, I reached values of -0.10 for Kp and -0.80 for Kd and the oscillations reduced a lot.
+6. So I played around with the Kp term again and reduced it to -0.20 and increased the Kd term to -0.75. 
+The oscillations reduced by a good amount. Continuing with this trend, I reached values of -0.10 for Kp 
+and -0.80 for Kd and the oscillations reduced a lot.
 
-7. However, the car would jerk at turns since the high Kd value would punish steep rate of change in cte. The revised Kp and Kd were -0.08 and -0.60 respectively. The car seemed to drive well within the track and never went off-road.
+7. However, the car would jerk at turns since the high Kd value would punish steep rate of change in cte. 
+The revised Kp and Kd were -0.08 and -0.60 respectively. The car seemed to drive well within the track and 
+never went off-road.
 
-8. I didn't have to really use the Ki gain. I thought some jerky motions might be smoothened by the Ki terms since it would keep reacting continously based on summation of the errors but it did not help much. Steering angle is though very sensitive to Ki gain and even smaller values would deviate the car from the track. Hence I decided not to use it.
+8. I didn't have to really use the Ki gain. I thought some jerky motions might be smoothened by the Ki 
+terms since it would keep reacting continously based on summation of the errors but it did not help much. 
+Steering angle is though very sensitive to Ki gain and even smaller values would deviate the car from the track. 
+Hence I decided not to use it.
